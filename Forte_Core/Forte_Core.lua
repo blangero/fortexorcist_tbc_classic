@@ -479,10 +479,16 @@ do
 		local name,_,icon,castTime,minRange,maxRange = GetSpellInfo(spell);
 		name = CustomIDToName[spell] or name;
 		if name then
-      FW.SpellInfo[name] = {spell,castTime,minRange,maxRange};
-		  if not FW.SpellInfo[name] then
-			  FW.SpellInfo[name] = {spell,castTime,minRange,maxRange};
+      ----print('getSepllInfo for name' .. name);
+      ----print('GetSpellInfo' .. spell);
+      ----print('castTime' .. castTime);
+      FW.SpellInfo2[name] = {spell,castTime,minRange,maxRange};
+		  if not FW.SpellInfo2[name] then
+			  FW.SpellInfo2[name] = {spell,castTime,minRange,maxRange};
 		  end
+      --print('SP init' .. spell);
+        --print(FW.SpellInfo2[name][1] or 0);
+        --print(FW.SpellInfo2[name][2] or 0);
 		  return name,icon;
 		else
 		  return "spell:"..spell;
@@ -741,6 +747,7 @@ FW.SetBonus = {};
 FW.Talent = {};
 
 FW.SpellInfo = {};-- id [,casttime,minrange,maxrange]
+FW.SpellInfo2 = {};
 
 do
   local SpecialCastTimes = {};
@@ -750,18 +757,26 @@ do
   end
 
   function FW:CastTime(spell)
+    ----print('CastTime for spell');
+    ----print(spell);
     if SpecialCastTimes[spell] then
+      ----print('SpecialCastTimes');
+      ----print(SpecialCastTimes[spell]() or 0);
       return SpecialCastTimes[spell]() or 0;
     else
-      if FW.SpellInfo[spell] then
-        return FW.SpellInfo[spell] and FW.SpellInfo[spell][2] or 0;
+      if FW.SpellInfo2[spell] then
+        --print('Non SpecialCastTimes' .. spell);
+        --print(FW.SpellInfo2[spell][1] or 0);
+        --print(FW.SpellInfo2[spell][2] or 0);
+        
+        return FW.SpellInfo2[spell] and FW.SpellInfo2[spell][2] or 0;
       end
     end
   end
 end
 
 function FW:SpellId(name)
-  return FW.SpellInfo[name][1] or name;
+  return FW.SpellInfo2[name][1] or name;
 end
 
 function FW:FrameScaleCheck(editbox)

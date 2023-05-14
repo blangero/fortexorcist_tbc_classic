@@ -645,9 +645,9 @@ local GetSpellCooldown = GetSpellCooldown;
 
 local GetActionInfo = GetActionInfo;
 local GetItemInfo = GetItemInfo;
-local GetItemCooldown = GetItemCooldown;
-local GetContainerNumSlots = GetContainerNumSlots;
-local GetContainerItemID = GetContainerItemID;
+local GetItemCooldown = GetItemCooldown or (C_Container and C_Container.GetItemCooldown);
+local GetContainerNumSlots = GetContainerNumSlots or (C_Container and C_Container.GetContainerNumSlots);
+local GetContainerItemID = GetContainerItemID or (C_Container and C_Container.GetContainerItemID);
 local GetPetActionInfo = GetPetActionInfo;
 local GetPetActionCooldown = GetPetActionCooldown;
 local GetInventoryItemID = GetInventoryItemID;
@@ -820,7 +820,7 @@ end
 local select = select;
 local GetInventoryItemTexture = GetInventoryItemTexture;
 local function CD_ScanWeaponEnchant()
-  local hasMainHandEnchant, mainHandExpiration, mainHandCharges, hasOffHandEnchant, offHandExpiration, offHandCharges, hasThrownEnchant, thrownExpiration, thrownCharges = GetWeaponEnchantInfo();
+  local hasMainHandEnchant, mainHandExpiration, mainHandCharges, mainHandEnchantID, hasOffHandEnchant, offHandExpiration, offHandCharges, offHandEnchantID = GetWeaponEnchantInfo();
   --FW:Show("scan");
   if hasMainHandEnchant then
     CD:CheckCooldown(FWL.WEAPON_ENCHANT_MAIN,GetTime(),mainHandExpiration*0.001,GetInventoryItemTexture("player",select(1,GetInventorySlotInfo("MainHandSlot"))),FLAG_ENCHANT);
@@ -831,11 +831,6 @@ local function CD_ScanWeaponEnchant()
     CD:CheckCooldown(FWL.WEAPON_ENCHANT_OFFHAND,GetTime(),offHandExpiration*0.001,GetInventoryItemTexture("player",select(1,GetInventorySlotInfo("SecondaryHandSlot"))),FLAG_ENCHANT);
   else
     CD:CheckCooldown(FWL.WEAPON_ENCHANT_OFFHAND,GetTime(),0,"",FLAG_ENCHANT);
-  end
-  if hasThrownEnchant then
-    CD:CheckCooldown(FWL.WEAPON_ENCHANT_RANGED,GetTime(),thrownExpiration*0.001,GetInventoryItemTexture("player",select(1,GetInventorySlotInfo("RangedSlot"))),FLAG_ENCHANT);
-  else
-    CD:CheckCooldown(FWL.WEAPON_ENCHANT_RANGED,GetTime(),0,"",FLAG_ENCHANT);
   end
 end
 

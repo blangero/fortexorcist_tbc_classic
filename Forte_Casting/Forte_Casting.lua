@@ -126,7 +126,7 @@ end
 local function CA_CheckCastSpeed()
   --FW:Show("checking cast speed");
   for key, val in pairs(FW.SpellInfo) do
-    local name, rank, icon, cost, isFunnel, powerType, castTime, minRange, maxRange = GetSpellInfo(val[1])
+    local name, rank, icon, castTime, minRange, maxRange, spellID, originalIcon = GetSpellInfo(val[1])
     if castTime then
       FW.SpellInfo[key][2] = castTime*0.001;
       FW.SpellInfo[key][3] = minRange;

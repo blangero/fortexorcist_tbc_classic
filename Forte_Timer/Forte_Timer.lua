@@ -2218,7 +2218,11 @@ local function ST_NewTimerFrame(index,root)
       vis = links[k][4];
       if vis > 0 then -- is visible
         _,t2,t3,t4,_,t6,t7,t8,t9,t10,t11,_,t13,t14,_,t16,_,t18,t19,t20,t21,t22,t23,_,_,_,t27,t28 = unpack(st[ links[k][1] ]);
-        t2 = t2 or 1000;
+        if not t2 then
+          --print("t2 not exists, spell 1 is" .. t4 );
+          --print("t2 not exists, spell 2 is" .. links[k][1] );
+        end
+        t2 = t2 or 1000; --currently missing t2 is mainhand/offhand enhancement
         t2 = t2/1000;
         -- add linked instance values
         -- print('current cast time:' .. t2)
